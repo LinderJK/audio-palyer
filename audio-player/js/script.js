@@ -1,7 +1,22 @@
 let track = {
    0: './assets/music/Libercio-feeling_alright.mp3',
+   1: './assets/music/Libercio-feeling_alright.mp3',
+}
+
+
+
+
+
+
+
+
+let defaultSongIndex = 0;
+updatePlayer()
+function updatePlayer (song) {
+
 
 }
+
 
 const contentDiv = document.querySelector('.player');
 document.body.onload =()=> addPlayer(track[0]);
@@ -13,6 +28,11 @@ function addPlayer (trackUrl) {
     player.setAttribute('src', trackUrl);
     playerButton();
 }
+
+
+
+
+
 
 // function playerButton () {
 //     let buttonNext = document.createElement('button');
