@@ -66,13 +66,16 @@ function prevSong() {
   }
 }
 
-const progressTime = document.querySelector('#currTime');
-
+const progressTimeBar = document.querySelector('#currTime');
+const allTimeBar = document.querySelector('#allTime');
 function updateBar () {
+    let allTime = audio.duration;
+    allTimeBar.innerHTML = calcTime(allTime);
+    //TODO FIX NAN
     if (isPlay) {
         console.log();
         let time = audio.currentTime;
-        progressTime.innerHTML = ''
+        progressTimeBar.innerHTML = calcTime(time);
         setTimeout(updateBar, 1000);
     }
     else {
@@ -85,14 +88,15 @@ function calcTime (num) {
     console.log(sec);
     let min = parseInt (sec / 60);
     console.log(min);
-
-    return `${min}:`
-
-
-
+    let a = sec % 60;
+    let b = String(a);
+    b = b.padStart(2, 0 );
+    console.log(a);
+    console.log(b);
+    return (`${min}:${b}`);
 }
 
-calcTime(421.511825);
+
 
  
 
@@ -101,11 +105,9 @@ const buttonPlay = document.querySelector('#buttonPause');
 buttonPlay.addEventListener('click', () => {
   if (!isPlay) {
     playSong();
-    updateBar(audio);
     console.log(audio.duration);
   } else {
     pauseSong();
-    updateBar(audio);
   }
 })
 
@@ -113,10 +115,13 @@ function playSong() {
   audio.volume = 0.5;
   isPlay = true;
   audio.play();
+  updateBar();
 }
 
 function pauseSong() {
   isPlay = false;
   audio.pause();
+  
+  updateBar();
 
 }
