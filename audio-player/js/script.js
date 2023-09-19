@@ -24,6 +24,7 @@ function updatePlayer(song) {
   nameSong.innerHTML = info[1].replace(/_/g, ' ');
   audio.src = `./assets/music/${song}.mp3`;
   coverSong.src = `./assets/image/${song}.png`;
+    
 }
 
 const buttonNextSong = document.querySelector('#buttonNext');
@@ -61,18 +62,50 @@ function prevSong() {
     currentTrack = trackList[trackListLength];
     updatePlayer(currentTrack);
     playSong();
+
   }
 }
 
+const progressTime = document.querySelector('#currTime');
 
+function updateBar () {
+    if (isPlay) {
+        console.log();
+        let time = audio.currentTime;
+        progressTime.innerHTML = ''
+        setTimeout(updateBar, 1000);
+    }
+    else {
+        return;
+    }
+}  
+
+function calcTime (num) {
+    let sec = parseInt(num);
+    console.log(sec);
+    let min = parseInt (sec / 60);
+    console.log(min);
+
+    return `${min}:`
+
+
+
+}
+
+calcTime(421.511825);
+
+ 
 
 
 const buttonPlay = document.querySelector('#buttonPause');
 buttonPlay.addEventListener('click', () => {
   if (!isPlay) {
     playSong();
+    updateBar(audio);
+    console.log(audio.duration);
   } else {
     pauseSong();
+    updateBar(audio);
   }
 })
 
