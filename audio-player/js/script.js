@@ -8,11 +8,12 @@ const autorSong = document.querySelector('#songAutor');
 const nameSong = document.querySelector('#songName');
 const coverSong = document.querySelector('#songCover');
 
-const progressTimeBar = document.querySelector('#currTime');
-const allTimeBar = document.querySelector('#allTime');
+const progressTimeText = document.querySelector('#currTime');
+const allTimeText = document.querySelector('#allTime');
 const buttonPrevSong = document.querySelector('#buttonPrev');
 const buttonNextSong = document.querySelector('#buttonNext');
 const buttonPlay = document.querySelector('#buttonPause');
+const progressRange = document.querySelector('.progress-bar__item');
 // const audioPlayer = document.querySelector(".player");
 
 const audio = new Audio();
@@ -22,7 +23,7 @@ const trackListLength = trackList.length - 1;
 
 function updatePlayer(song) {
   const info = song.split('-');
-  autorSong.innerHTML = info[0].replace(/_/g, ' ');
+  autorSong.innerHTML = info[0].replace(/_/g, ' ').toUpperCase();
   nameSong.innerHTML = info[1].replace(/_/g, ' ');
   audio.src = `./assets/music/${song}.mp3`;
   coverSong.src = `./assets/image/${song}.png`;
@@ -31,12 +32,14 @@ updatePlayer(currentTrack);
 
 function updateBar() {
   const allTime = audio.duration;
-  allTimeBar.innerHTML = calcTime(allTime);
+  allTimeText.innerHTML = calcTime(allTime);
   // TODO FIX NAN
   if (isPlay) {
     // console.log();
     const time = audio.currentTime;
-    progressTimeBar.innerHTML = calcTime(time);
+    progressTimeText.innerHTML = calcTime(time);
+    const persent = (time / allTime) * 100;
+    progressRange.setAttribute('value', persent);
     setTimeout(updateBar, 1000);
   }
 }
@@ -97,7 +100,13 @@ function calcTime(num) {
   b = b.padStart(2, 0);
   // console.log(a);
   // console.log(b);
+  console.log(`${min}:${b}`);
   return `${min}:${b}`;
+}
+
+function updatePlayTrack() {
+  const time = (progressRange.value * audio.duration) / 100;
+  audio.currentTime = time;
 }
 
 buttonNextSong.addEventListener('click', nextSong);
@@ -110,3 +119,4 @@ buttonPlay.addEventListener('click', () => {
     pauseSong();
   }
 });
+progressRange.addEventListener('change', updatePlayTrack);
