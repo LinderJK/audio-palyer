@@ -1,47 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="container">
-      <div class="player">
-        <div class="player__title title">
-          <div class="title__song-image">
-            <img id="songCover" src="./assets/image/title-song.png" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>audio-player</title>
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Forum&family=Inter:wght@400;700&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="player">
+          <div class="player__title title">
+            <div class="title__song-image">
+              <img id="songCover" src="./assets/image/title-song.png" />
+            </div>
+            <div class="title__song-info">
+              <p>Now Playing</p>
+              <p id="songAutor">Purple haze</p>
+              <p id="songName">Jimi hendrix Woodstock</p>
+            </div>
           </div>
-          <div class="title__song-info">
-            <p>Now Playing</p>
-            <p id="songAutor">Purple haze</p>
-            <p id="songName">Jimi hendrix Woodstock</p>
+
+          <div class="player__nav nav">
+            <div class="nav__button">
+              <button class="button button-prev" id="buttonPrev">
+                <span></span>
+              </button>
+              <button class="button button-stop" id="buttonPause">
+                <span></span>
+              </button>
+              <button class="button button-next" id="buttonNext">
+                <span></span>
+              </button>
+            </div>
+            <div class="nav__progress-bar progress-bar">
+              <div class="progress-bar__time">
+                <span id="currTime">0:00</span>
+              </div>
+              <input
+                class="progress-bar__item"
+                type="range"
+                value=""
+                min=""
+                max=""
+                step="1"
+              />
+              <div class="progress-bar__time">
+                <span id="allTime">0:00</span>
+              </div>
+              <!-- <p>this is scrioll</p> -->
+            </div>
           </div>
         </div>
-
-        <div class="player__nav nav">
-          <div class="nav__button">
-            <button class="button button-prev" id="buttonPrev"><span></span></button>
-            <button class="button button-stop" id="buttonPause"><span></span></button>
-            <button class="button button-next" id="buttonNext"><span></span></button>
-            
-          </div>
-          <div class="nav__progress-bar progress-bar">
-            <div class="progress-bar__time"><span id="currTime">0:00</span></div>
-            <input class="progress-bar__item" type="range" value="" min="" max="" step="1">
-            <div class="progress-bar__time"><span id="allTime">0:00</span></div>
-            <!-- <p>this is scrioll</p> -->
-          </div>
-
-        </div>
-
       </div>
+      <div class="footer">123</div>
     </div>
-    <div class="footer">
-        123
-    </div>
-  </div>
-  <script src="./js/script.js" type="text/javascript"></script>
-</body>
+    <script src="./js/script.js" type="text/javascript"></script>
+  </body>
 </html>

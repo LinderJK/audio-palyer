@@ -1,22 +1,24 @@
-let trackList = [
-  "Arkady_Antsyrev-Ne_vspominaem",
-  "Ishome-Ken_Tavr",
-  "Pobeg-Mosty"
+const trackList = [
+  'Arkady_Antsyrev-Ne_vspominaem',
+  'Ishome-Ken_Tavr',
+  'Pobeg-Mosty',
 ];
-
 
 const autorSong = document.querySelector('#songAutor');
 const nameSong = document.querySelector('#songName');
 const coverSong = document.querySelector('#songCover');
-const audioPlayer = document.querySelector('.player');
 
+const progressTimeBar = document.querySelector('#currTime');
+const allTimeBar = document.querySelector('#allTime');
+const buttonPrevSong = document.querySelector('#buttonPrev');
+const buttonNextSong = document.querySelector('#buttonNext');
+const buttonPlay = document.querySelector('#buttonPause');
+// const audioPlayer = document.querySelector(".player");
 
 const audio = new Audio();
 let isPlay = false;
 let currentTrack = trackList[0];
-let trackListLength = trackList.length - 1;
-updatePlayer(currentTrack);
-
+const trackListLength = trackList.length - 1;
 
 function updatePlayer(song) {
   const info = song.split('-');
@@ -24,92 +26,20 @@ function updatePlayer(song) {
   nameSong.innerHTML = info[1].replace(/_/g, ' ');
   audio.src = `./assets/music/${song}.mp3`;
   coverSong.src = `./assets/image/${song}.png`;
-    
 }
+updatePlayer(currentTrack);
 
-const buttonNextSong = document.querySelector('#buttonNext');
-buttonNextSong.addEventListener('click', nextSong);
-
-function nextSong() {
-  let currentTrackIndex = trackList.indexOf(currentTrack);
-  console.log('currentTrackIndex', currentTrackIndex);
-  if (currentTrackIndex < trackListLength) {
-    currentTrack = trackList[currentTrackIndex + 1];
-    updatePlayer(currentTrack);
-    playSong();
-    console.log('currentTrackIndex', currentTrackIndex);
-  }
-  if (currentTrackIndex === trackListLength) {
-    currentTrack = trackList[0];
-    updatePlayer(currentTrack);
-    playSong();
+function updateBar() {
+  const allTime = audio.duration;
+  allTimeBar.innerHTML = calcTime(allTime);
+  // TODO FIX NAN
+  if (isPlay) {
+    // console.log();
+    const time = audio.currentTime;
+    progressTimeBar.innerHTML = calcTime(time);
+    setTimeout(updateBar, 1000);
   }
 }
-
-const buttonPrevSong = document.querySelector('#buttonPrev');
-buttonPrevSong.addEventListener('click', prevSong);
-
-function prevSong() {
-  let currentTrackIndex = trackList.indexOf(currentTrack);
-  console.log('currentTrackIndex', currentTrackIndex);
-  if (currentTrackIndex !== 0) {
-    currentTrack = trackList[currentTrackIndex - 1];
-    updatePlayer(currentTrack);
-    playSong();
-    console.log('currentTrackIndex', currentTrackIndex);
-  }
-  if (currentTrackIndex === 0) {
-    currentTrack = trackList[trackListLength];
-    updatePlayer(currentTrack);
-    playSong();
-
-  }
-}
-
-const progressTimeBar = document.querySelector('#currTime');
-const allTimeBar = document.querySelector('#allTime');
-function updateBar () {
-    let allTime = audio.duration;
-    allTimeBar.innerHTML = calcTime(allTime);
-    //TODO FIX NAN
-    if (isPlay) {
-        console.log();
-        let time = audio.currentTime;
-        progressTimeBar.innerHTML = calcTime(time);
-        setTimeout(updateBar, 1000);
-    }
-    else {
-        return;
-    }
-}  
-
-function calcTime (num) {
-    let sec = parseInt(num);
-    console.log(sec);
-    let min = parseInt (sec / 60);
-    console.log(min);
-    let a = sec % 60;
-    let b = String(a);
-    b = b.padStart(2, 0 );
-    console.log(a);
-    console.log(b);
-    return (`${min}:${b}`);
-}
-
-
-
- 
-
-
-const buttonPlay = document.querySelector('#buttonPause');
-buttonPlay.addEventListener('click', () => {
-  if (!isPlay) {
-    playSong();
-    console.log(audio.duration);
-  } else {
-    pauseSong();
-  }
-})
 
 function playSong() {
   audio.volume = 0.5;
@@ -121,7 +51,62 @@ function playSong() {
 function pauseSong() {
   isPlay = false;
   audio.pause();
-  
   updateBar();
-
 }
+
+function nextSong() {
+  const currentTrackIndex = trackList.indexOf(currentTrack);
+  // console.log('currentTrackIndex', currentTrackIndex);
+  if (currentTrackIndex < trackListLength) {
+    currentTrack = trackList[currentTrackIndex + 1];
+    updatePlayer(currentTrack);
+    playSong();
+    // console.log('currentTrackIndex', currentTrackIndex);
+  }
+  if (currentTrackIndex === trackListLength) {
+    [currentTrack] = trackList;
+    console.log('array distr', currentTrack);
+    updatePlayer(currentTrack);
+    playSong();
+  }
+}
+
+function prevSong() {
+  const currentTrackIndex = trackList.indexOf(currentTrack);
+  // console.log('currentTrackIndex', currentTrackIndex);
+  if (currentTrackIndex !== 0) {
+    currentTrack = trackList[currentTrackIndex - 1];
+    updatePlayer(currentTrack);
+    playSong();
+    // console.log('currentTrackIndex', currentTrackIndex);
+  }
+  if (currentTrackIndex === 0) {
+    currentTrack = trackList[trackListLength];
+    updatePlayer(currentTrack);
+    playSong();
+  }
+}
+
+function calcTime(num) {
+  const sec = parseInt(num, 10);
+  // console.log(sec);
+  const min = parseInt(sec / 60, 10);
+  // console.log(min);
+  const a = sec % 60;
+  let b = String(a);
+  b = b.padStart(2, 0);
+  // console.log(a);
+  // console.log(b);
+  return `${min}:${b}`;
+}
+
+buttonNextSong.addEventListener('click', nextSong);
+buttonPrevSong.addEventListener('click', prevSong);
+buttonPlay.addEventListener('click', () => {
+  if (!isPlay) {
+    playSong();
+    // console.log(audio.duration);
+  } else {
+    pauseSong();
+  }
+});
