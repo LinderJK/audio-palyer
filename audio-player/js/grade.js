@@ -3,8 +3,7 @@ const tasks = [
     number: 1,
     maxscore: 10,
     myscore: 10,
-    description:
-      'Вёрстка +10',
+    description: 'Вёрстка +10',
   },
   {
     number: 2,
@@ -53,7 +52,7 @@ function grade() {
   let scoreSumm = 0;
   for (const task of tasks) {
     console.log(
-      `№${task.number} - ${task.myscore}/${task.maxscore} - ${task.description}`,
+      `№${task.number} - ${task.myscore}/${task.maxscore} - ${task.description}`
     );
     scoreSumm = scoreSumm + task.myscore;
   }
