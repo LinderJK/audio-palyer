@@ -39,7 +39,7 @@ function animations() {
 }
 
 function updatePlayButton() {
-  if (buttonPlay.classList.contains('button-stop')) {
+  if (!isPlay && buttonPlay.classList.contains('button-stop')) {
     buttonPlay.classList.remove('button-stop');
     buttonPlay.classList.add('button-play');
   } else {
