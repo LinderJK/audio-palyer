@@ -8,12 +8,13 @@ const autorSong = document.querySelector('#songAutor');
 const nameSong = document.querySelector('#songName');
 const coverSong = document.querySelector('#songCover');
 
-const progressTimeText = document.querySelector('#currTime');
-const allTimeText = document.querySelector('#allTime');
+const currnentTimeText = document.querySelector('#currTime');
+const durationTimeText = document.querySelector('#allTime');
 const buttonPrevSong = document.querySelector('#buttonPrev');
 const buttonNextSong = document.querySelector('#buttonNext');
 const buttonPlay = document.querySelector('#buttonPause');
-const progressRange = document.querySelector('.progress-bar__item');
+const progressBar = document.querySelector('.progress-bar__item');
+const playerBackImg = document.querySelector('.container__bg-image');
 // const audioPlayer = document.querySelector(".player");
 
 const audio = new Audio();
@@ -27,20 +28,22 @@ function updatePlayer(song) {
   nameSong.innerHTML = info[1].replace(/_/g, ' ');
   audio.src = `./assets/music/${song}.mp3`;
   coverSong.src = `./assets/image/${song}.png`;
+  playerBackImg.style.backgroundImage = `url('/audio-player/assets/image/${song}.png')`;
+  progressBar.value = 0;
 }
 updatePlayer(currentTrack);
 
-function updateBar() {
-  const allTime = audio.duration;
-  allTimeText.innerHTML = calcTime(allTime);
-  // TODO FIX NAN
+function updateProgressBar() {
+  const durationTime = Math.round(audio.duration);
+  const currentTime = Math.round(audio.currentTime);
+
+  durationTimeText.innerHTML = calcTime(durationTime);
   if (isPlay) {
     // console.log();
-    const time = audio.currentTime;
-    progressTimeText.innerHTML = calcTime(time);
-    const persent = (time / allTime) * 100;
-    progressRange.setAttribute('value', persent);
-    setTimeout(updateBar, 1000);
+    // const time = audio.currentTime;
+    currnentTimeText.innerHTML = calcTime(currentTime);
+    // const persentOfTime = (currentTime / durationTime) * 100;
+    // progressBar.value = persentOfTime;
   }
 }
 
@@ -48,13 +51,15 @@ function playSong() {
   audio.volume = 0.5;
   isPlay = true;
   audio.play();
-  updateBar();
+  updateProgressBar();
+
 }
 
 function pauseSong() {
   isPlay = false;
   audio.pause();
-  updateBar();
+  updateProgressBar();
+
 }
 
 function nextSong() {
@@ -68,7 +73,7 @@ function nextSong() {
   }
   if (currentTrackIndex === trackListLength) {
     [currentTrack] = trackList;
-    console.log('array distr', currentTrack);
+    // console.log('array distr', currentTrack);
     updatePlayer(currentTrack);
     playSong();
   }
@@ -100,12 +105,17 @@ function calcTime(num) {
   b = b.padStart(2, 0);
   // console.log(a);
   // console.log(b);
-  console.log(`${min}:${b}`);
+  // console.log(`${min}:${b}`);
   return `${min}:${b}`;
 }
 
 function updatePlayTrack() {
-  const time = (progressRange.value * audio.duration) / 100;
+  if (progressBar.value === 0) {
+    audio.currentTime = 0;
+  }
+  const time = Math.floor((progressBar.value * audio.duration) / 100);
+  // console.log('proggress range',progressBar.value);
+  // console.log(time);
   audio.currentTime = time;
 }
 
@@ -114,9 +124,17 @@ buttonPrevSong.addEventListener('click', prevSong);
 buttonPlay.addEventListener('click', () => {
   if (!isPlay) {
     playSong();
-    // console.log(audio.duration);
   } else {
     pauseSong();
   }
 });
-progressRange.addEventListener('change', updatePlayTrack);
+
+progressBar.addEventListener('click', updatePlayTrack);
+audio.addEventListener('timeupdate', (evt)=> {
+  updateProgressBar();
+});
+
+audio.addEventListener('ended', (evt) => {
+  console.log("FINISH");
+  nextSong();
+});
