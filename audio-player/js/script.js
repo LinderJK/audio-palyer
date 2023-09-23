@@ -71,12 +71,15 @@ updatePlayer(currentTrack);
 
 function updateProgressBar() {
   let durationTime = audio.duration || 0;
-  durationTime = Math.round(audio.duration);
-  const currentTime = Math.round(audio.currentTime);
-  durationTimeText.textContent = calcTime(durationTime);
-  if (isPlay) {
-    currnentTimeText.textContent = calcTime(currentTime);
-    progressBar.value = (currentTime / durationTime) * 100;
+  if (!isNaN(durationTime)) {
+    durationTime = Math.round(durationTime);
+    const currentTime = Math.round(audio.currentTime);
+    durationTimeText.textContent = calcTime(durationTime);
+
+    if (isPlay) {
+      currnentTimeText.textContent = calcTime(currentTime);
+      progressBar.value = (currentTime / durationTime) * 100;
+    }
   }
 }
 
