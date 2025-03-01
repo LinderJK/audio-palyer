@@ -61,7 +61,7 @@ function updatePlayer(song) {
   nameSong.textContent = info[1].replace(/_/g, ' ');
   audio.src = `./assets/music/${song}.mp3`;
   coverSong.src = `./assets/image/${song}.png`;
-  playerBackImg.style.backgroundImage = `url('./audio-player/assets/image/${song}.png')`;
+  playerBackImg.style.backgroundImage = `url('./assets/image/${song}.png')`;
   progressBar.value = 0;
   audio.volume = volumeRange.value;
   updateVolumeText();
